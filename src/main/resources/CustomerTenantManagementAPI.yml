@@ -1,0 +1,350 @@
+openapi: 3.1.1
+info:
+  title: Customer and Tenant Management API
+  version: '1.0'
+  description: API for managing customers and their associated tenants
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+components:
+  schemas:
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          format: uri
+          description: URI of the linked resource
+
+    Links:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        tenants:
+          $ref: '#/components/schemas/Link'
+        activate:
+          $ref: '#/components/schemas/Link'
+        deactivate:
+          $ref: '#/components/schemas/Link'
+
+    CustomerCode:
+      type: object
+      properties:
+        content:
+          type: string
+          pattern: '^([a-z]{3})\d{5}'
+          description: Combined short code and number (e.g., "acm99101")
+      required:
+        - content
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: Full name of the customer (e.g., "Acme Corporation AB")
+        shortCode:
+          type: string
+          description: Short identifier for the customer (e.g., "ACM"). Called Customer Key in CMDB.
+        number:
+          type: integer
+          description: Customer number in CMDB (5 digits, e.g. 20507)
+          minimum: 1
+        isActive:
+          type: boolean
+          default: false
+        code:
+          $ref: '#/components/schemas/CustomerCode'
+          description: Combined Customer Short Code and Number (e.g., "acm99101") for logging and context purposes.
+        tenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tenant'
+          readOnly: true
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+        - name
+        - shortCode
+        - number
+
+    TenantCode:
+      type: object
+      properties:
+        content:
+          type: string
+          pattern: '^([a-z]{3})\d{5}\/\1_(prod|sandbox|test|history)$'
+          minLength: 16
+          maxLength: 30
+          description: Combined customer code and tenant code (e.g., "acm99101/acm_prod")
+      required:
+        - content
+
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: The Name of the Tenancy. Created with Customer Short Code and Tenant Type (e.g., "ACM Prod").
+        description:
+          type: string
+        code:
+          $ref: '#/components/schemas/TenantCode'
+        type:
+          type: string
+          enum: [TEST, SANDBOX, HISTORY, PROD]
+        version:
+          type: string
+        targetConnectorEndpoint:
+          type: string
+          format: uri
+        customerId:
+          type: string
+          format: uuid
+        isActive:
+          type: boolean
+          default: false
+        _links:
+          type: object
+          properties:
+            self:
+              $ref: '#/components/schemas/Link'
+            customer:
+              $ref: '#/components/schemas/Link'
+      required:
+        - name
+        - type
+        - version
+        - customerId
+
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+paths:
+  /api/customers:
+    get:
+      summary: List all customers
+      operationId: listCustomers
+      parameters:
+        - name: active
+          in: query
+          schema:
+            type: boolean
+          description: Filter by active status
+      responses:
+        '200':
+          description: List of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    
+    post:
+      summary: Create a new customer
+      operationId: createCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid input
+
+  /api/customers/{customerId}:
+    parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    
+    get:
+      summary: Get customer by ID
+      operationId: getCustomer
+      responses:
+        '200':
+          description: Customer found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    
+    put:
+      summary: Update customer
+      operationId: updateCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customer updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/customers/{customerId}/activate:
+    post:
+      summary: Activate customer
+      operationId: activateCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Customer activated
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/customers/{customerId}/deactivate:
+    post:
+      summary: Deactivate customer
+      operationId: deactivateCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Customer deactivated
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/customers/{customerId}/tenants:
+    parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    
+    get:
+      summary: List customer's tenants
+      operationId: listCustomerTenants
+      responses:
+        '200':
+          description: List of tenants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tenant'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/tenants:
+    post:
+      summary: Create a new tenant
+      operationId: createTenant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tenant'
+      responses:
+        '201':
+          description: Tenant created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '400':
+          description: Invalid input
+        '404':
+          description: Customer not found
+
+  /api/tenants/{tenantId}:
+    parameters:
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    
+    get:
+      summary: Get tenant by ID
+      operationId: getTenant
+      responses:
+        '200':
+          description: Tenant found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    
+    put:
+      summary: Update tenant
+      operationId: updateTenant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tenant'
+      responses:
+        '200':
+          description: Tenant updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    
+    delete:
+      summary: Delete tenant
+      operationId: deleteTenant
+      responses:
+        '204':
+          description: Tenant deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'

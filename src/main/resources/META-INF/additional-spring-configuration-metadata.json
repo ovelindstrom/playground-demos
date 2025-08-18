@@ -1,0 +1,73 @@
+{"properties": [
+  {
+    "name": "killers.enabled",
+    "type": "java.lang.Boolean",
+    "description": "Is the Killers feature enabled?",
+    "defaultValue": "false"
+  },
+  {
+    "name": "killers.profile",
+    "type": "java.lang.String",
+    "description": "What profile should be used for the Killers feature? Must have a sub feature matching the profile name.",
+    "defaultValue": "Dexter"
+  },
+  {
+    "name": "killers.dexter.enabled",
+    "type": "java.lang.String",
+    "description": "Is the Dexter sub feature enabled.",
+    "defaultValue": "false"
+  },
+  {
+    "name": "killers.dexter.name",
+    "type": "java.lang.String",
+    "description": "Just a way to override the name.",
+    "defaultValue": "Dexter"
+  },
+  {
+    "name": "killers.pennywise.enabled",
+    "type": "java.lang.String",
+    "description": "Is the Pennywise sub feature enabled.",
+    "defaultValue": "false"
+  },
+  {
+    "name": "killers.pennywise.name",
+    "type": "java.lang.String",
+    "description": "Just a way to override the name.",
+    "defaultValue": "Pennywise"
+  },
+  {
+    "name": "org.eclipse.store.jokes.root",
+    "type": "java.lang.String",
+    "description": "The class name for the class that handles the root of the Jokes."
+  },
+  {
+    "name": "org.eclipse.store.jokes.auto-start",
+    "type": "java.lang.String",
+    "description": "Toggle for autostarting the Jokes feature."
+  },
+  {
+    "name": "org.eclipse.store.jokes.storage-directory",
+    "type": "java.lang.String",
+    "description": "Where to store the jokes data in the file system."
+  },
+  {
+    "name": "org.eclipse.store.tenants.auto-start",
+    "type": "java.lang.String",
+    "description": "Toggle for autostarting the Tenants feature."
+  },
+  {
+    "name": "org.eclipse.store.tenants.root",
+    "type": "java.lang.String",
+    "description": "The class name for the class that handles the root of the Tenants."
+  },
+  {
+    "name": "org.eclipse.store.tenants.storage-directory",
+    "type": "java.lang.String",
+    "description": "Where to store the tenants data in the file system."
+  },
+  {
+    "name": "org.eclipse.store.rest.enabled",
+    "type": "java.lang.String",
+    "description": "Toggle for enabling the REST feature."
+  }
+]}

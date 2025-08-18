@@ -1,0 +1,23 @@
+# curl-test-pod-json.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl-test-i18n-json-pod
+spec:
+  containers:
+  - name: curl
+    image: curlimages/curl:latest # A lightweight image with curl
+    command: ["tail", "-f", "/dev/null"] # Keep the pod running
+    env:
+    - name: MY_NODE_IP # The name of the environment variable
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP # Get the node IP where the pod is running
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "64Mi"
+        cpu: "100m"
+  restartPolicy: Never

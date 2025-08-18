@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-i18n-json-deployment
+  namespace: ove-demo 
+  labels:
+    app: nginx-i18n-json
+spec:
+  replicas: 1 # We only need one replica for this example
+  selector:
+    matchLabels:
+      app: nginx-i18n-json
+  template:
+    metadata:
+      labels:
+        app: nginx-i18n-json
+    spec:
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-i18n-json-config
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf # Mount specific file for Nginx config
+        - name: nginx-config-volume
+          mountPath: /usr/share/nginx/html/en/message.json
+          subPath: en_message.json # Mount JSON file
+        - name: nginx-config-volume
+          mountPath: /usr/share/nginx/html/sv/message.json
+          subPath: sv_message.json # Mount JSON file

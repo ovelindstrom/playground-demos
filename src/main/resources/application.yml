@@ -1,0 +1,73 @@
+spring:
+  application:
+    name: demo-tenancy
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  datasource:
+    url: jdbc:h2:mem:mydb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  threads:
+    virtual:
+      enabled: true
+server:
+  shutdown: graceful
+
+
+## Eclipse Store Configuration
+org:
+  eclipse:
+    store:
+    ## Jokes Store Configuration
+      jokes:
+        auto-start: true
+        root: com.example.demo.jokes.eclipsestore.model.JokesRoot
+        storage-directory: jokes_storage
+    ## Tenant Store Configuration
+      tenants:
+        auto-start: true
+        root: com.example.demo.jokes.eclipsestore.model.TenatsRoot
+        storage-directory: tenants_storage
+      
+      rest:
+        enabled: true
+
+vaadin:
+  url-mapping: /store-console/*
+
+
+
+## Unleash configuration
+unleash:
+  enabled: true
+  appName: killers-onboarding-java
+  instanceId: killers-onboarding-instance
+  apiUrl: ##
+  ## Should not be in the properties file...
+  apiKey: ##
+
+killers:
+    ## Master feature toggle
+    enabled: false
+    ## Feature toggles for different profiles
+    profile: pennywise
+    ## Profile specific toggles
+    dexter:
+      enabled: false
+      name: Dexter
+    pennywise:
+      enabled: false
+      name: Pennywise
+

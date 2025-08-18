@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-i18n-json-nodeport-service
+  namespace: ove-demo 
+spec:
+  selector:
+    app: nginx-i18n-json
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80 # The port your Nginx container listens on
+      # nodePort: 30080 # We have specified the nodePort in this example. If you ommit this, it will be auto-assigned by K8

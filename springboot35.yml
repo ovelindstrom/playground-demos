@@ -1,0 +1,6 @@
+type: specs.openrewrite.org/v1beta/recipe
+name: Spring Boot Best Practices
+recipeList:
+  - org.openrewrite.java.spring.boot3.SpringBoot3BestPracticesOnly
+  - org.openrewrite.java.spring.boot3.AddRouteTrailingSlash
+  - org.openrewrite.java.migrate.guava.NoGuavaJava11

@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-i18n-json-config
+  namespace: ove-demo 
+data:
+  nginx.conf: |
+    events {
+        worker_connections 1024;
+    }
+    http {
+        server {
+            listen 80;
+            location /en/message {
+                default_type application/json; # Set content type for JSON
+                root /usr/share/nginx/html;
+                try_files /en/message.json =404;
+            }
+            location /sv/message {
+                default_type application/json; # Set content type for JSON
+                root /usr/share/nginx/html;
+                try_files /sv/message.json =404;
+            }
+            location / {
+                return 404 "{\"error\":\"Not Found\"}\n"; # Return JSON for 404
+            }
+        }
+    }
+  en_message.json: |
+    {
+      "language": "English",
+      "message": "Welcome to our i18n Service!",
+      "description": "This is the English version of the message."
+    }
+  sv_message.json: |
+    {
+      "language": "Svenska",
+      "message": "Välkommen till vår i18n-tjänst!",
+      "description": "Det här är den svenska versionen av meddelandet."
+    }
