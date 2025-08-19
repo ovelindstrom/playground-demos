@@ -34,3 +34,4 @@ build/
 
 ## Eclipse Storage ##
 /jokes_storage
+*.tbl
