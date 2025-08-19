@@ -35,12 +35,10 @@ org:
         auto-start: true
         root: com.example.demo.jokes.eclipsestore.model.JokesRoot
         storage-directory: jokes_storage
-    ## Tenant Store Configuration
-      tenants:
+      tpch:
         auto-start: true
-        root: com.example.demo.jokes.eclipsestore.model.TenatsRoot
-        storage-directory: tenants_storage
-      
+        root: com.example.demo.tpch.model.TpchRoot
+        storage-directory: tpch_storage
       rest:
         enabled: true
 

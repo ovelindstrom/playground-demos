@@ -50,3 +50,11 @@ The DexterRunner uses the Unleash SDK directly and the PenywiseRunner uses Open 
 See https://github.com/Unleash/unleash#get-started-in-2-steps for documentation on the Open Source variant.
 
 admin password in Lastpass under `Shared Development/Kubernetes & Helm/Unleash in AKS01`.
+
+## Big Data Comparisson
+### Database Initialization
+
+The `init-scripts` directory contains SQL scripts that are automatically executed when the PostgreSQL container is created for the first time. This is handled by the official PostgreSQL Docker image, which looks for scripts in the `/docker-entrypoint-initdb.d` directory.
+
+The initscripts generates tables for the TPC-H database, described at https://www.tpc.org/TPC_Documents_Current_Versions/pdf/TPC-H_v3.0.1.pdf
+

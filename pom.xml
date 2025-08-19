@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.3</version>
+		<version>3.5.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -31,12 +31,11 @@
 	</dependencyManagement>
 
 	<dependencies>
-
+		<!-- Spring Boot Starter Dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -58,6 +57,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		<!-- In memory and Eclipse Storage testing -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -66,7 +66,7 @@
 		<dependency>
 			<groupId>org.eclipse.store</groupId>
 			<artifactId>integrations-spring-boot3</artifactId>
-			<version>2.1.3</version>
+			<version>3.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.store</groupId>
@@ -78,11 +78,7 @@
 			<artifactId>storage-restservice-springboot</artifactId>
 			<version>2.1.3</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+		
 		<!-- Unleash dependencies -->
 		<dependency>
 			<groupId>io.getunleash</groupId>
@@ -101,11 +97,16 @@
 			<version>0.1.1-alpha</version>
 		</dependency>
 
-		<!-- Migration -->
-		 <dependency>
-   			<groupId>org.springframework.boot</groupId>
-   			<artifactId>spring-boot-properties-migrator</artifactId>
-  			<version>3.5.4</version>
+		<!-- Migration and tools-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-properties-migrator</artifactId>
+			<version>3.5.4</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>

@@ -22,19 +22,36 @@ public class MultipleStorageConfiguration {
         this.managerFactory = managerFactory;
     }  
 
-    @Bean("jokes")
+    @Bean("jokes_config")
     @ConfigurationProperties("org.eclipse.store.jokes")
     EclipseStoreProperties jokesStoresProperties() {
         return new EclipseStoreProperties();
     }
 
     @Bean
-    @Qualifier("jokes")
-    EmbeddedStorageManager jokesStore(@Qualifier("jokes") final EclipseStoreProperties jokesStoresProperties) {
+    @Qualifier("jokes_storage")
+    EmbeddedStorageManager jokesStore(@Qualifier("jokes_config") final EclipseStoreProperties jokesStoresProperties) {
         return managerFactory.createStorage(
             foundationFactory.createStorageFoundation(jokesStoresProperties),
             jokesStoresProperties.isAutoStart()
         );
     }
+
+    @Bean("tpch_config")
+    @ConfigurationProperties("org.eclipse.store.tpch")
+    EclipseStoreProperties tpchStoresProperties() {
+        return new EclipseStoreProperties();
+    }
+
+    @Bean
+    @Qualifier("tpch_storage")
+    EmbeddedStorageManager tpchStore(@Qualifier("tpch_config") final EclipseStoreProperties tpchStoresProperties) {
+        return managerFactory.createStorage(
+            foundationFactory.createStorageFoundation(tpchStoresProperties),
+            tpchStoresProperties.isAutoStart()
+        );
+    }
+
+    
 
 }
