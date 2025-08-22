@@ -99,27 +99,4 @@ public class DemoApplication {
 		};
 	}
 
-
-	// This is not how to do it.... 
-	/* @Bean
-	CommandLineRunner runKiller(
-			@Value("${killers.enabled:true}") boolean killersEnabled,
-			@Value("${killers.profile:dexter}") String killersProfile,
-			DexterRunner dexterRunner,
-			PennywiseRunner pennywiseRunner) {
-		if (!killersEnabled) {
-			return args -> {
-				logger.info("Killers are disabled. No killer will run.");
-			};
-		}
-		if ("dexter".equalsIgnoreCase(killersProfile)) {
-			return dexterRunner;
-		} else if ("pennywise".equalsIgnoreCase(killersProfile)) {
-			return pennywiseRunner;
-		} else {
-			return args -> {
-				logger.warn("Unknown killer profile '{}'. No killer will run.", killersProfile);
-			};
-		}
-	} */
 }

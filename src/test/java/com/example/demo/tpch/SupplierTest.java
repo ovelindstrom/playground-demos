@@ -1,6 +1,9 @@
 package com.example.demo.tpch;
 
 import org.junit.jupiter.api.Test;
+
+import com.example.demo.tpch.entities.Supplier;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SupplierTest {
@@ -8,7 +11,7 @@ public class SupplierTest {
     @Test
     void testFromLine_ValidInput() {
         String line = "1|Supplier#000000001|Supplier#Address|17|27-918-335-1736|5755.94|Supplier#Comment|";
-        Supplier supplier = new Supplier(0, "", "", 0, "", 0.0, "").fromLine(line);
+        Supplier supplier = new Supplier(0, "", "", 0, "", 0.0, "", null).fromLine(line);
 
         assertEquals(1, supplier.suppKey());
         assertEquals("Supplier#000000001", supplier.name());
@@ -28,22 +31,24 @@ public class SupplierTest {
                 17,
                 "27-918-335-1736",
                 5755.94,
-                "Supplier#Comment|");
-        String expected = "1|Supplier#000000001|Supplier#Address|17|27-918-335-1736|5755.94|Supplier#Comment|";
+                "Supplier#Comment",
+                null
+        );
+        String expected = "1|Supplier#000000001|Supplier#Address|17|27-918-335-1736|5755.94|Supplier#Comment";
         assertEquals(expected, supplier.toLine());
     }
 
     @Test
     void testFromLine_InvalidInput() {
         String invalidLine = "1|Supplier#000000001|Supplier#Address|17|27-918-335-1736|5755.94";
-        Supplier dummy = new Supplier(0, "", "", 0, "", 0.0, "");
+        Supplier dummy = new Supplier(0, "", "", 0, "", 0.0, "", null);
         assertThrows(IllegalArgumentException.class, () -> dummy.fromLine(invalidLine));
     }
 
     @Test
     void testFromLine_NonNumericFields() {
         String invalidLine = "abc|Supplier#000000001|Supplier#Address|xyz|27-918-335-1736|notadouble|Supplier#Comment|";
-        Supplier dummy = new Supplier(0, "", "", 0, "", 0.0, "");
+        Supplier dummy = new Supplier(0, "", "", 0, "", 0.0, "", null);
         assertThrows(NumberFormatException.class, () -> dummy.fromLine(invalidLine));
     }
 }

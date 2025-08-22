@@ -1,17 +1,20 @@
-package com.example.demo.tpch;
+package com.example.demo.tpch.entities;
+
+import java.util.Map;
 
 public record Supplier(
-    int suppKey,
+    long suppKey,
     String name,
     String address,
-    int nationKey,
+    long nationKey,
     String phone,
     double acctBal,
-    String comment
+    String comment,
+    Nation nation
 ) implements TpchEntity<Supplier> {
 
     public Supplier() {
-        this(0, "", "", 0, "", 0.0, "");
+        this(0, "", "", 0, "", 0.0, "", null);
     }
 
     @Override
@@ -28,19 +31,32 @@ public record Supplier(
     }
 
     @Override
-    public Supplier fromLine(String line) {
+    public Supplier fromLine(String line, Map<String, Map<Long, ? extends TpchEntity<?>>> maps) {
         String[] parts = line.split("\\|");
         if (parts.length != 7) {
             throw new IllegalArgumentException("Invalid line format");
         }
+
+        Nation nation = null;
+        long nationKey = Long.parseLong(parts[3]);
+        if (maps != null && maps.containsKey("nations")) {
+            nation = (Nation) maps.get("nations").get(nationKey);
+        }
+
         return new Supplier(
-            Integer.parseInt(parts[0]),
+            Long.parseLong(parts[0]),
             parts[1],
             parts[2],
-            Integer.parseInt(parts[3]),
+            nationKey,
             parts[4],
             Double.parseDouble(parts[5]),
-            parts[6]
+            parts[6],
+            nation
         );
+    }
+
+    @Override
+    public Long getKey() {
+        return Long.valueOf(suppKey);
     }
 }

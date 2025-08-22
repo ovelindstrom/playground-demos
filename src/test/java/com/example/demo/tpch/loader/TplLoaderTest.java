@@ -1,8 +1,9 @@
 package com.example.demo.tpch.loader;
 
-import com.example.demo.tpch.Nation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import com.example.demo.tpch.entities.Nation;
 
 import java.io.IOException;
 import java.nio.file.Files;

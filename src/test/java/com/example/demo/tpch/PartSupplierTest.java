@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.tpch.entities.PartSupplier;
+import com.example.demo.tpch.entities.TpchEntityFactory;
+
 public class PartSupplierTest {
     @Test
     void testFromLine() {
@@ -20,7 +23,7 @@ public class PartSupplierTest {
 
     @Test
     void testToLine() {
-        PartSupplier partSupplier = new PartSupplier(1, 2, 3325, 771.64, "PartSupplier#Comment");
+        PartSupplier partSupplier = new PartSupplier(1, 2, 3325, 771.64, "PartSupplier#Comment",null, null);
         String expected = "1|2|3325|771.64|PartSupplier#Comment";
         assertEquals(expected, partSupplier.toLine());
     }

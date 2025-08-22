@@ -1,6 +1,9 @@
 package com.example.demo.tpch;
 
 import org.junit.jupiter.api.Test;
+
+import com.example.demo.tpch.entities.Region;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RegionTest {

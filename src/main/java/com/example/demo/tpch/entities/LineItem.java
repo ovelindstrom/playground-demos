@@ -1,12 +1,13 @@
-package com.example.demo.tpch;
+package com.example.demo.tpch.entities;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 public record LineItem(
-    int orderKey,
-    int partKey,
-    int suppKey,
-    int lineNumber,
+    long orderKey,
+    long partKey,
+    long suppKey,
+    long lineNumber,
     double quantity,
     double extendedPrice,
     double discount,
@@ -18,11 +19,14 @@ public record LineItem(
     LocalDate receiptDate,
     String shipInstruct,
     String shipMode,
-    String comment
+    String comment,
+    Order order,
+    Part part,
+    Supplier supplier
 ) implements TpchEntity<LineItem> {
 
     public LineItem() {
-        this(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, "", "", LocalDate.now(), LocalDate.now(), LocalDate.now(), "", "", "");
+        this(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, "", "", LocalDate.now(), LocalDate.now(), LocalDate.now(), "", "", "", null, null, null);
     }
 
     @Override
@@ -48,15 +52,38 @@ public record LineItem(
     }
 
     @Override
-    public LineItem fromLine(String line) {
+    public LineItem fromLine(String line, Map<String, Map<Long, ? extends TpchEntity<?>>> maps) {
         String[] parts = line.split("\\|");
         if (parts.length != 16) {
             throw new IllegalArgumentException("Invalid line format");
         }
+
+        long orderKey = Long.parseLong(parts[0]);
+        Order order = null;
+
+        long partKey = Long.parseLong(parts[1]);
+        Part part = null;
+
+        long suppKey = Long.parseLong(parts[2]);
+        Supplier supplier = null;
+        
+
+        if(maps != null) {
+            if (maps.containsKey("parts")) {
+                part = (Part) maps.get("parts").get( partKey);
+            }
+            if (maps.containsKey("suppliers")) {
+                supplier = (Supplier) maps.get("suppliers").get(suppKey);
+            }
+            if (maps.containsKey("orders")) {
+                order = (Order) maps.get("orders").get( orderKey);
+            }
+        }
+        
         return new LineItem(
-            Integer.parseInt(parts[0]),
-            Integer.parseInt(parts[1]),
-            Integer.parseInt(parts[2]),
+            orderKey,
+            partKey,
+            suppKey,
             Integer.parseInt(parts[3]),
             Double.parseDouble(parts[4]),
             Double.parseDouble(parts[5]),
@@ -69,7 +96,19 @@ public record LineItem(
             LocalDate.parse(parts[12]),
             parts[13],
             parts[14],
-            parts[15]
+            parts[15],
+            order,
+            part,
+            supplier
         );
+    }
+
+    public record Key(long orderKey, long partKey, long suppKey, long lineNumber) {
+    // hashCode() and equals() automatically generated and optimized
+}
+    @Override
+    public Key getKey() {
+
+        return new Key(orderKey, partKey, suppKey, lineNumber);
     }
 }

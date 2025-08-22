@@ -1,6 +1,10 @@
 package com.example.demo.tpch;
 
 import org.junit.jupiter.api.Test;
+
+import com.example.demo.tpch.entities.Order;
+import com.example.demo.tpch.entities.TpchEntityFactory;
+
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +23,8 @@ class OrderTest {
             "5-LOW",
             "Clerk#000000951",
             0,
-            "nstructions sleep furiously among "
+            "nstructions sleep furiously among ",
+            null
         );
         Order actual = TpchEntityFactory.fromLine(line, Order::new);
         assertEquals(expected, actual);
@@ -56,7 +61,8 @@ class OrderTest {
             "5-LOW",
             "Clerk#000000951",
             0,
-            "nstructions sleep furiously among "
+            "nstructions sleep furiously among ",
+            null
         );
         String expectedLine = "1|3691|O|173665.47|1996-01-02|5-LOW|Clerk#000000951|0|nstructions sleep furiously among ";
         assertEquals(expectedLine, order.toLine());

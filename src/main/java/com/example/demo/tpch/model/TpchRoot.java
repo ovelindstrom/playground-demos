@@ -1,56 +1,119 @@
 package com.example.demo.tpch.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
-import com.example.demo.tpch.Customer;
-import com.example.demo.tpch.LineItem;
-import com.example.demo.tpch.Nation;
-import com.example.demo.tpch.Order;
-import com.example.demo.tpch.Part;
-import com.example.demo.tpch.PartSupplier;
-import com.example.demo.tpch.Region;
-import com.example.demo.tpch.Supplier;
+import java.util.Map;
+
+import com.example.demo.tpch.entities.Customer;
+import com.example.demo.tpch.entities.LineItem;
+import com.example.demo.tpch.entities.Nation;
+import com.example.demo.tpch.entities.Order;
+import com.example.demo.tpch.entities.Part;
+import com.example.demo.tpch.entities.PartSupplier;
+import com.example.demo.tpch.entities.Region;
+import com.example.demo.tpch.entities.Supplier;
 
 public class TpchRoot {
-    private final List<Customer> customers = new ArrayList<>();
-    private final List<LineItem> lineItems = new ArrayList<>();
-    private final List<Nation> nations = new ArrayList<>();
-    private final List<Order> orders = new ArrayList<>();
-    private final List<Part> parts = new ArrayList<>();
-    private final List<PartSupplier> partSuppliers = new ArrayList<>();
-    private final List<Region> regions = new ArrayList<>();
-    private final List<Supplier> suppliers = new ArrayList<>();
+    // Base entities (no dependencies)
+    private final Map<Integer, Region> regions;
+    private final Map<Integer, Part> parts;
 
-    public List<Customer> getCustomers() {
-        return this.customers;
+    // Level 1 dependencies (depend only on base entities)
+    private final Map<Integer, Nation> nations; // depends on Regions
+
+    // Level 2 dependencies
+    private final Map<Integer, Customer> customers; // depends on Nations
+    private final Map<Integer, Supplier> suppliers; // depends on Nations
+
+    // Level 3 dependencies
+    private final Map<Integer, PartSupplier> partSuppliers; // depends on Parts & Suppliers
+    private final Map<Integer, Order> orders; // depends on Customers
+
+    // Level 4 dependencies (highest level)
+    private final Map<Integer, LineItem> lineItems; // depends on Orders & Suppliers
+
+    public TpchRoot() {
+        this.regions = new HashMap<>();
+        this.parts = new HashMap<>();
+        this.nations = new HashMap<>();
+        this.customers = new HashMap<>();
+        this.suppliers = new HashMap<>();
+        this.partSuppliers = new HashMap<>();
+        this.orders = new HashMap<>();
+        this.lineItems = new HashMap<>();
     }
 
-    public List<LineItem> getLineItems() {
-        return this.lineItems;
+    
+
+    public void setRegions(Map<Integer, Region> regions){
+        this.regions.clear();
+        this.regions.putAll(regions);
     }
 
-    public List<Nation> getNations() {
-        return this.nations;
+    public Map<Integer, Region> getRegions() {
+        return regions;
     }
 
-    public List<Order> getOrders() {
-        return this.orders;
+    public void setParts(Map<Integer, Part> parts){
+        this.parts.clear();
+        this.parts.putAll(parts);
     }
 
-    public List<Part> getParts() {
-        return this.parts;
+    public Map<Integer, Part> getParts() {
+        return parts;
     }
 
-    public List<PartSupplier> getPartSuppliers() {
-        return this.partSuppliers;
+    public void setNations(Map<Integer, Nation> nations) {
+        this.nations.clear();
+        this.nations.putAll(nations);
     }
 
-    public List<Region> getRegions() {
-        return this.regions;
+    public Map<Integer, Nation> getNations() {
+        return nations;
     }
 
-    public List<Supplier> getSuppliers() {
-        return this.suppliers;
+    public void setCustomers(Map<Integer, Customer> customers) {
+        this.customers.clear();
+        this.customers.putAll(customers);
     }
+
+    public Map<Integer, Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setSuppliers(Map<Integer, Supplier> suppliers) {
+        this.suppliers.clear();
+        this.suppliers.putAll(suppliers);
+    }
+
+    public Map<Integer, Supplier> getSuppliers() {
+        return suppliers;
+    }
+
+    public void setPartSuppliers(Map<Integer, PartSupplier> partSuppliers) {
+        this.partSuppliers.clear();
+        this.partSuppliers.putAll(partSuppliers);
+    }
+    public Map<Integer, PartSupplier> getPartSuppliers() {
+        return partSuppliers;
+    }
+
+    public void setOrders(Map<Integer, Order> orders) {
+        this.orders.clear();
+        this.orders.putAll(orders);
+    }
+
+    public Map<Integer, Order> getOrders() {
+        return orders;
+    }
+
+    public void setLineItems(Map<Integer, LineItem> lineItems) {
+        this.lineItems.clear();
+        this.lineItems.putAll(lineItems);
+    }
+
+    public Map<Integer, LineItem> getLineItems() {
+        return lineItems;
+    }
+
 }

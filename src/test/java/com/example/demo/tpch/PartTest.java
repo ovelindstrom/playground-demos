@@ -1,6 +1,9 @@
 package com.example.demo.tpch;
 
 import org.junit.jupiter.api.Test;
+
+import com.example.demo.tpch.entities.Part;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PartTest {
