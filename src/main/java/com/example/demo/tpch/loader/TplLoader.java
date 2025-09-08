@@ -23,6 +23,8 @@ import com.example.demo.tpch.entities.TpchEntityFactory;
 
 public class TplLoader {
 
+        
+
         static <T extends TpchEntity<T>> Map<Long, T> loadAsMap(String filePath,
                         Supplier<T> supplier, Map<String, Map<Long, ? extends TpchEntity<?>>> maps) {
 
@@ -53,7 +55,7 @@ public class TplLoader {
         }
 
         @org.springframework.beans.factory.annotation.Value("${tpch.tpl.data-directory}")
-        private String tpchTplDataDirectory = "C:\\Users\\ove.lindstrom\\Projects\\Playground\\demo\\src\\main\\resources\\tpch-data\\";
+        private String tpchTplDataDirectory = "/Users/ovelindstrom/Projects/playground-demos/src/main/resources/tpch-data/";
 
         // Maps
         Map<Long, Region> regions = new HashMap<>();

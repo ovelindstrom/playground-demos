@@ -1,6 +1,6 @@
 spring:
   application:
-    name: demo-tenancy
+    name: demo-eclipsestore
   lifecycle:
     timeout-per-shutdown-phase: 30s
   h2:
@@ -46,27 +46,4 @@ vaadin:
 ## TPCH Configs
 tpch:
   tpl:
-    data-directory: C:\\Users\\ove.lindstrom\\Projects\\Playground\\demo\\src\\main\\resources\\tpch-data\\
-
-## Unleash configuration
-unleash:
-  enabled: true
-  appName: killers-onboarding-java
-  instanceId: killers-onboarding-instance
-  apiUrl: ##
-  ## Should not be in the properties file...
-  apiKey: ##
-
-killers:
-    ## Master feature toggle
-    enabled: false
-    ## Feature toggles for different profiles
-    profile: pennywise
-    ## Profile specific toggles
-    dexter:
-      enabled: false
-      name: Dexter
-    pennywise:
-      enabled: false
-      name: Pennywise
-
+    data-directory: /Users/ovelindstrom/Projects/playground-demos/tpch-data/

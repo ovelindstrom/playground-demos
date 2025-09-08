@@ -1,4 +1,4 @@
-package com.example.demo.jokes.eclipsestore.initializer;
+package com.example.demo.tpch.initializer;
 
 import org.eclipse.serializer.reference.LazyReferenceManager;
 import org.eclipse.serializer.reference.Lazy;

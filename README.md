@@ -1,11 +1,10 @@
 # Introduction 
 
-Resources for discussion around multi tenancy management in the new AARO Ascension Kubernetes
-cluster. This is a work in progress and is not yet ready for production use.
+Resources for discussion around multi tenancy management, storage and other cool stuff I play around with.
 
 
 # Getting Started
-Using standard maven build, Java 21 and Spring Boot 3.4.4.
+Using standard Maven build, Java 21 and Spring Boot 3.5.5. Going for Spring Boot 4.0.0 as soon as it is GA.
 
 Maven Wrapper need to be initialized.
 
@@ -49,7 +48,6 @@ The DexterRunner uses the Unleash SDK directly and the PenywiseRunner uses Open 
 
 See https://github.com/Unleash/unleash#get-started-in-2-steps for documentation on the Open Source variant.
 
-admin password in Lastpass under `Shared Development/Kubernetes & Helm/Unleash in AKS01`.
 
 ## Big Data Comparisson
 ### Database Initialization

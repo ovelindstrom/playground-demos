@@ -1,4 +1,4 @@
-package com.example.demo.jokes.eclipsestore.storage;
+package com.example.demo.tpch.storage;
 
 import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.eclipse.store.integrations.spring.boot.types.factories.EmbeddedStorageFoundationFactory;
@@ -22,20 +22,6 @@ public class MultipleStorageConfiguration {
         this.managerFactory = managerFactory;
     }  
 
-    @Bean("jokes_config")
-    @ConfigurationProperties("org.eclipse.store.jokes")
-    EclipseStoreProperties jokesStoresProperties() {
-        return new EclipseStoreProperties();
-    }
-
-    @Bean
-    @Qualifier("jokes_storage")
-    EmbeddedStorageManager jokesStore(@Qualifier("jokes_config") final EclipseStoreProperties jokesStoresProperties) {
-        return managerFactory.createStorage(
-            foundationFactory.createStorageFoundation(jokesStoresProperties),
-            jokesStoresProperties.isAutoStart()
-        );
-    }
 
     @Bean("tpch_config")
     @ConfigurationProperties("org.eclipse.store.tpch")
