@@ -506,13 +506,102 @@
 0000000000001000078 java.util.Collections$EmptySet{}
 0000000000001000079 java.util.Collections$EmptyMap{}
 0000000000001000080 com.example.demo.tpch.model.TpchRoot{
-	java.util.Map com.example.demo.tpch.model.TpchRoot#regions      ,
-	java.util.Map com.example.demo.tpch.model.TpchRoot#parts        ,
-	java.util.Map com.example.demo.tpch.model.TpchRoot#nations      ,
-	java.util.Map com.example.demo.tpch.model.TpchRoot#customers    ,
-	java.util.Map com.example.demo.tpch.model.TpchRoot#suppliers    ,
-	java.util.Map com.example.demo.tpch.model.TpchRoot#partSuppliers,
-	java.util.Map com.example.demo.tpch.model.TpchRoot#orders       ,
-	java.util.Map com.example.demo.tpch.model.TpchRoot#lineItems    ,
+	java.util.Map  com.example.demo.tpch.model.TpchRoot#regions      ,
+	java.util.Map  com.example.demo.tpch.model.TpchRoot#parts        ,
+	java.util.Map  com.example.demo.tpch.model.TpchRoot#nations      ,
+	java.util.Map  com.example.demo.tpch.model.TpchRoot#customers    ,
+	java.util.Map  com.example.demo.tpch.model.TpchRoot#suppliers    ,
+	java.util.List com.example.demo.tpch.model.TpchRoot#partSuppliers,
+	java.util.Map  com.example.demo.tpch.model.TpchRoot#orders       ,
+	java.util.Map  com.example.demo.tpch.model.TpchRoot#lineItems    ,
 }
 0000000000001000081 java.util.Map{}
+0000000000001000082 java.util.List{}
+0000000000001000083 com.example.demo.tpch.entities.Region{
+	java.lang.String com.example.demo.tpch.entities.Region#name     ,
+	java.lang.String com.example.demo.tpch.entities.Region#comment  ,
+	long             com.example.demo.tpch.entities.Region#regionKey,
+}
+0000000000001000085 com.example.demo.tpch.entities.Part{
+	java.lang.String com.example.demo.tpch.entities.Part#name       ,
+	java.lang.String com.example.demo.tpch.entities.Part#mfgr       ,
+	java.lang.String com.example.demo.tpch.entities.Part#brand      ,
+	java.lang.String com.example.demo.tpch.entities.Part#type       ,
+	java.lang.String com.example.demo.tpch.entities.Part#container  ,
+	java.lang.String com.example.demo.tpch.entities.Part#comment    ,
+	long             com.example.demo.tpch.entities.Part#partKey    ,
+	int              com.example.demo.tpch.entities.Part#size       ,
+	double           com.example.demo.tpch.entities.Part#retailPrice,
+}
+0000000000001000086 com.example.demo.tpch.entities.Nation{
+	java.lang.String com.example.demo.tpch.entities.Nation#name     ,
+	java.lang.String com.example.demo.tpch.entities.Nation#comment  ,
+	long             com.example.demo.tpch.entities.Nation#nationKey,
+	long             com.example.demo.tpch.entities.Nation#regionKey,
+}
+0000000000001000087 com.example.demo.tpch.entities.Customer{
+	java.lang.String com.example.demo.tpch.entities.Customer#name                 ,
+	java.lang.String com.example.demo.tpch.entities.Customer#address              ,
+	java.lang.String com.example.demo.tpch.entities.Customer#phone                ,
+	java.lang.String com.example.demo.tpch.entities.Customer#marketSegment        ,
+	java.lang.String com.example.demo.tpch.entities.Customer#comment              ,
+	long             com.example.demo.tpch.entities.Customer#customerKey          ,
+	long             com.example.demo.tpch.entities.Customer#nationKey            ,
+	long             com.example.demo.tpch.entities.Customer#accountBalanceInCents,
+}
+0000000000001000088 com.example.demo.tpch.entities.Supplier{
+	java.lang.String com.example.demo.tpch.entities.Supplier#name     ,
+	java.lang.String com.example.demo.tpch.entities.Supplier#address  ,
+	java.lang.String com.example.demo.tpch.entities.Supplier#phone    ,
+	java.lang.String com.example.demo.tpch.entities.Supplier#comment  ,
+	long             com.example.demo.tpch.entities.Supplier#suppKey  ,
+	long             com.example.demo.tpch.entities.Supplier#nationKey,
+	double           com.example.demo.tpch.entities.Supplier#acctBal  ,
+}
+0000000000001000089 com.example.demo.tpch.entities.PartSupplier{
+	java.lang.String com.example.demo.tpch.entities.PartSupplier#comment   ,
+	long             com.example.demo.tpch.entities.PartSupplier#partKey   ,
+	long             com.example.demo.tpch.entities.PartSupplier#suppKey   ,
+	int              com.example.demo.tpch.entities.PartSupplier#availQty  ,
+	double           com.example.demo.tpch.entities.PartSupplier#supplyCost,
+}
+0000000000001000090 com.example.demo.tpch.entities.Order{
+	java.lang.String    com.example.demo.tpch.entities.Order#orderStatus  ,
+	java.time.LocalDate com.example.demo.tpch.entities.Order#orderDate    ,
+	java.lang.String    com.example.demo.tpch.entities.Order#orderPriority,
+	java.lang.String    com.example.demo.tpch.entities.Order#clerk        ,
+	java.lang.String    com.example.demo.tpch.entities.Order#comment      ,
+	long                com.example.demo.tpch.entities.Order#orderKey     ,
+	long                com.example.demo.tpch.entities.Order#customerKey  ,
+	double              com.example.demo.tpch.entities.Order#totalPrice   ,
+	int                 com.example.demo.tpch.entities.Order#shipPriority ,
+}
+0000000000001000091 java.time.LocalDate{
+	int   java.time.LocalDate#year ,
+	short java.time.LocalDate#month,
+	short java.time.LocalDate#day  ,
+}
+0000000000001000092 com.example.demo.tpch.entities.LineItem$Key{
+	long com.example.demo.tpch.entities.LineItem$Key#orderKey  ,
+	long com.example.demo.tpch.entities.LineItem$Key#partKey   ,
+	long com.example.demo.tpch.entities.LineItem$Key#suppKey   ,
+	long com.example.demo.tpch.entities.LineItem$Key#lineNumber,
+}
+0000000000001000093 com.example.demo.tpch.entities.LineItem{
+	java.lang.String    com.example.demo.tpch.entities.LineItem#returnFlag   ,
+	java.lang.String    com.example.demo.tpch.entities.LineItem#lineStatus   ,
+	java.time.LocalDate com.example.demo.tpch.entities.LineItem#shipDate     ,
+	java.time.LocalDate com.example.demo.tpch.entities.LineItem#commitDate   ,
+	java.time.LocalDate com.example.demo.tpch.entities.LineItem#receiptDate  ,
+	java.lang.String    com.example.demo.tpch.entities.LineItem#shipInstruct ,
+	java.lang.String    com.example.demo.tpch.entities.LineItem#shipMode     ,
+	java.lang.String    com.example.demo.tpch.entities.LineItem#comment      ,
+	long                com.example.demo.tpch.entities.LineItem#orderKey     ,
+	long                com.example.demo.tpch.entities.LineItem#partKey      ,
+	long                com.example.demo.tpch.entities.LineItem#suppKey      ,
+	long                com.example.demo.tpch.entities.LineItem#lineNumber   ,
+	double              com.example.demo.tpch.entities.LineItem#quantity     ,
+	double              com.example.demo.tpch.entities.LineItem#extendedPrice,
+	double              com.example.demo.tpch.entities.LineItem#discount     ,
+	double              com.example.demo.tpch.entities.LineItem#tax          ,
+}

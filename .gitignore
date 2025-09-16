@@ -34,4 +34,7 @@ build/
 
 ## Eclipse Storage ##
 /jokes_storage
+tpch_storage
 *.tbl
+*.ptd
+*.dat

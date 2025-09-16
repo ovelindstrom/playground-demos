@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import com.example.demo.tpch.entities.Nation;
+import com.example.demo.tpch.entities.TpchEntityFactory.EntityType;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -47,7 +48,7 @@ class TplLoaderTest {
         Path nationFile = tempDir.resolve("nation.tbl");
         Files.writeString(nationFile, nationTblContent);
 
-        List<Nation> nations = TplLoader.load(nationFile.toString(), Nation::new);
+        List<Nation> nations = TplLoader.load(nationFile.toString(), EntityType.NATION);
 
         assertNotNull(nations);
         assertEquals(25, nations.size());
@@ -67,7 +68,7 @@ class TplLoaderTest {
 
     @Test
     void testLoad_NonExistentFile_ReturnsEmptyList() {
-        List<Nation> nations = TplLoader.load("non_existent_file.tbl", Nation::new);
+        List<Nation> nations = TplLoader.load("non_existent_file.tbl", EntityType.NATION);
         assertTrue(nations.isEmpty());
     }
 
@@ -75,7 +76,7 @@ class TplLoaderTest {
     void testLoad_EmptyFile_ReturnsEmptyList() throws IOException {
         Path emptyFile = tempDir.resolve("empty.tbl");
         Files.createFile(emptyFile);
-        List<Nation> nations = TplLoader.load(emptyFile.toString(), Nation::new);
+        List<Nation> nations = TplLoader.load(emptyFile.toString(), EntityType.NATION);
         assertTrue(nations.isEmpty());
     }
 }

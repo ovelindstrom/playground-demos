@@ -28,15 +28,11 @@ spring:
 org:
   eclipse:
     store:
-    ## Jokes Store Configuration
-      jokes:
-        auto-start: true
-        root: com.example.demo.jokes.eclipsestore.model.JokesRoot
-        storage-directory: jokes_storage
       tpch:
         auto-start: true
         root: com.example.demo.tpch.model.TpchRoot
         storage-directory: tpch_storage
+        channel-count: 4
       rest:
         enabled: true
 

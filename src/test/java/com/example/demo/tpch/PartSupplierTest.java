@@ -7,12 +7,13 @@ import org.junit.jupiter.api.Test;
 
 import com.example.demo.tpch.entities.PartSupplier;
 import com.example.demo.tpch.entities.TpchEntityFactory;
+import static com.example.demo.tpch.entities.TpchEntityFactory.EntityType;
 
 public class PartSupplierTest {
     @Test
     void testFromLine() {
         String line = "1|2|3325|771.64|PartSupplier#Comment|";
-        PartSupplier partSupplier = TpchEntityFactory.fromLine(line, PartSupplier::new);
+        PartSupplier partSupplier = (PartSupplier) TpchEntityFactory.fromLine(EntityType.PART_SUPPLIER, line);
 
         assertEquals(1, partSupplier.partKey());
         assertEquals(2, partSupplier.suppKey());
@@ -21,17 +22,11 @@ public class PartSupplierTest {
         assertEquals("PartSupplier#Comment", partSupplier.comment());
     }
 
-    @Test
-    void testToLine() {
-        PartSupplier partSupplier = new PartSupplier(1, 2, 3325, 771.64, "PartSupplier#Comment",null, null);
-        String expected = "1|2|3325|771.64|PartSupplier#Comment";
-        assertEquals(expected, partSupplier.toLine());
-    }
 
     @Test
     void testFromLineWithInvalidData() {
         String line = "1|2|3325|771.64|";
-        assertThrows(IllegalArgumentException.class, () -> TpchEntityFactory.fromLine(line, PartSupplier::new));
+        assertThrows(IllegalArgumentException.class, () -> TpchEntityFactory.fromLine(EntityType.PART_SUPPLIER, line));
     }
 
 }

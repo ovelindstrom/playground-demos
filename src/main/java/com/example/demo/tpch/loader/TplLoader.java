@@ -8,8 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.example.demo.tpch.entities.Customer;
 import com.example.demo.tpch.entities.LineItem;
@@ -20,30 +22,34 @@ import com.example.demo.tpch.entities.PartSupplier;
 import com.example.demo.tpch.entities.Region;
 import com.example.demo.tpch.entities.TpchEntity;
 import com.example.demo.tpch.entities.TpchEntityFactory;
+import com.example.demo.tpch.storage.TpchStorage;
 
 public class TplLoader {
 
-        
+        private static final Logger logger = LoggerFactory.getLogger(TplLoader.class);
 
-        static <T extends TpchEntity<T>> Map<Long, T> loadAsMap(String filePath,
-                        Supplier<T> supplier, Map<String, Map<Long, ? extends TpchEntity<?>>> maps) {
+        private TpchStorage tpchStorage;
 
-                return load(filePath, supplier, maps).stream()
-                                .collect(Collectors.toMap(t -> (Long) t.getKey(), Function.identity()));
+        public TplLoader(TpchStorage tpchStorage) {
+                this.tpchStorage = tpchStorage;
         }
 
-        
-        static <T extends TpchEntity<T>> List<T> load(String filePath, Supplier<T> supplier) {
-                return load(filePath, supplier, null);
+        // This metod can return any entity type as a map
+        static <T extends TpchEntity<T>> Map<Long, T> loadAsMap(String filePath, TpchEntityFactory.EntityType type) {
+
+                return load(filePath, type)
+                                .stream()
+                                .collect(Collectors.toMap(
+                                                t -> (Long) t.getKey(),
+                                                t -> (T) t));
         }
 
-        static <T extends TpchEntity<T>> List<T> load(String filePath, Supplier<T> supplier,
-                        Map<String, Map<Long, ? extends TpchEntity<?>>> maps) {
+        static <T extends TpchEntity<T>> List<T> load(String filePath, TpchEntityFactory.EntityType type) {
                 List<T> entities = new ArrayList<>();
                 try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
                         String line;
                         while ((line = br.readLine()) != null) {
-                                T entity = TpchEntityFactory.fromLine(line, supplier, maps);
+                                T entity = (T) TpchEntityFactory.fromLine(type, line);
                                 entities.add(entity);
                         }
                 } catch (IOException e) {
@@ -83,85 +89,144 @@ public class TplLoader {
                  * Order - from orders.tbl
                  * LineItem - from lineitem.tbl
                  */
-                loadRegions();
-                loadParts();
-                loadNations(); // after regions
-                loadCustomers(); // after nations
-                loadSuppliers(); // after nations
-                loadPartSuppliers(); // after parts and suppliers
-                loadOrders(); // after customers
+                logger.info("Starting TPL data loading from directory: " + tpchTplDataDirectory);
+                //loadRegions();
+                //loadParts();
+                //loadNations(); // after regions
+                //loadCustomers(); // after nations
+                //loadSuppliers(); // after nations
+                //loadPartSuppliers(); // after parts and suppliers
+                //loadOrders(); // after customers
                 loadLineItems(); // after orders and suppliers
+
         }
 
         private void loadRegions() {
                 // Load Regions
+                logger.info("Loading regions from: " + tpchTplDataDirectory + "region.tbl");
 
-                regions = TplLoader.loadAsMap(
-                                tpchTplDataDirectory + "region.tbl",
-                                Region::new, null);
+                regions = TplLoader.loadAsMap(tpchTplDataDirectory + "region.tbl",
+                                TpchEntityFactory.EntityType.REGION);
+
+                // Log that is is loaded and how many
+                logger.info("Loaded " + regions.size() + " regions.");
+                logger.info("Finished loading regions.");
+                // Update root
+                tpchStorage.putRegions(regions);
 
         }
 
         private void loadParts() {
                 // Load part data
+                logger.info("Loading parts from: " + tpchTplDataDirectory + "part.tbl");
                 parts = TplLoader.loadAsMap(
                                 tpchTplDataDirectory + "part.tbl",
-                                Part::new, null);
+                                TpchEntityFactory.EntityType.PART);
+                logger.info("Loaded " + parts.size() + " parts.");
+                logger.info("Finished loading parts.");
+                // Update root
+                tpchStorage.putParts(parts);
         }
 
         private void loadNations() {
                 // Load nation data (with region references)
+                logger.info("Loading nations from: " + tpchTplDataDirectory + "nation.tbl");
                 nations = TplLoader.loadAsMap(
                                 tpchTplDataDirectory + "nation.tbl",
-                                Nation::new, Map.of("regions", regions));
+                                TpchEntityFactory.EntityType.NATION);
+                logger.info("Loaded " + nations.size() + " nations.");
+                logger.info("Finished loading nations.");
+                // Update root
+                tpchStorage.putNations(nations);
         }
 
         private void loadCustomers() {
                 // Load customer data (with nation references)
+                logger.info("Loading customers from: " + tpchTplDataDirectory + "customer.tbl");
                 customers = TplLoader.loadAsMap(
                                 tpchTplDataDirectory + "customer.tbl",
-                                Customer::new, Map.of("nations", nations));
+                                TpchEntityFactory.EntityType.CUSTOMER);
+                logger.info("Loaded " + customers.size() + " customers.");
+                logger.info("Finished loading customers.");
+                // Update root
+                tpchStorage.putCustomers(customers);
         }
 
         private void loadSuppliers() {
                 // Load supplier data (with nation references)
+                logger.info("Loading suppliers from: " + tpchTplDataDirectory + "supplier.tbl");
                 suppliers = TplLoader.loadAsMap(
                                 tpchTplDataDirectory + "supplier.tbl",
-                                com.example.demo.tpch.entities.Supplier::new, Map.of("nations", nations));
+                                TpchEntityFactory.EntityType.SUPPLIER);
+                logger.info("Loaded " + suppliers.size() + " suppliers.");
+                logger.info("Finished loading suppliers.");
+                // Update root
+                tpchStorage.putSuppliers(suppliers);
         }
 
         private void loadPartSuppliers() {
                 // Load part-supplier relationships
+                logger.info("Loading part-suppliers from: " + tpchTplDataDirectory + "partsupp.tbl");
+
                 partSuppliers = TplLoader.load(
                                 tpchTplDataDirectory + "partsupp.tbl",
-                                PartSupplier::new, Map.of("parts", parts, "suppliers", suppliers));
+                                TpchEntityFactory.EntityType.PART_SUPPLIER);
+
+                logger.info("Loaded " + partSuppliers.size() + " part-suppliers.");
+                logger.info("Finished loading part-suppliers.");
+
+                // Update root
+                tpchStorage.putPartSuppliers(partSuppliers);
         }
 
         private void loadOrders() {
                 // Load order data (with customer references)
+                logger.info("Loading orders from: " + tpchTplDataDirectory + "orders.tbl");
                 orders = TplLoader.loadAsMap(
                                 tpchTplDataDirectory + "orders.tbl",
-                                Order::new, Map.of("customers", customers));
+                                TpchEntityFactory.EntityType.ORDER);
+                logger.info("Loaded " + orders.size() + " orders.");
+                logger.info("Finished loading orders.");
+                // Update root
+                tpchStorage.putOrders(orders);
         }
 
         private void loadLineItems() {
                 // Load line item data (with order and supplier references)
-                lineItems = TplLoader.load(
+                logger.info("Loading line items from: " + tpchTplDataDirectory + "lineitem.tbl");
+                List<LineItem> lineItemsList = TplLoader.load(
                                 tpchTplDataDirectory + "lineitem.tbl",
-                                LineItem::new, Map.of("orders", orders, "suppliers", suppliers, "parts", parts))
-                                .stream()
-                                .collect(Collectors.toMap(li -> (LineItem.Key) li.getKey(), Function.identity()));
-        }
+                                TpchEntityFactory.EntityType.LINE_ITEM);
 
-        public static void main(String[] args) {
-                TplLoader loader = new TplLoader();
-                loader.loadData();
+                int batchSize = 10000;
+                List<LineItem> batch = new ArrayList<>(batchSize);
+                int count = 1;
+                for (LineItem li : lineItemsList) {
+                        batch.add(li);
+                        if (batch.size() == batchSize) {
+                                logger.info("Saving LineItem batch " + count);
 
-                // Print out the current memory
-                Runtime runtime = Runtime.getRuntime();
-                System.out.println("Used memory: " + (runtime.totalMemory() - runtime.freeMemory()) / 1024 + " KB");
-                System.out.println("Total memory: " + runtime.totalMemory() / 1024 + " KB");
-                System.out.println("Max memory: " + runtime.maxMemory() / 1024 + " KB");
+                                Map<LineItem.Key, LineItem> batchMap = batch.stream()
+                                                .collect(Collectors.toMap(l -> (LineItem.Key) l.getKey(),
+                                                                Function.identity()));
+                                tpchStorage.putLineItems(batchMap);
+                                batch.clear();
+                                count++;
+                        }
+                        
+                }
+                if (!batch.isEmpty()) {
+                        logger.info("Saving final LineItem batch ");
+                        Map<LineItem.Key, LineItem> batchMap = batch.stream()
+                                        .collect(Collectors.toMap(l -> (LineItem.Key) l.getKey(), Function.identity()));
+                        tpchStorage.putLineItems(batchMap);
+                }
+
+                logger.info("Loaded " + lineItems.size() + " line items.");
+                logger.info("Finished loading line items.");
+                lineItemsList.clear();
+                lineItemsList = null;
+                System.gc();
 
         }
 

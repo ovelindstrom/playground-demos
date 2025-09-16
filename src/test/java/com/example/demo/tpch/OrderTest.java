@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import com.example.demo.tpch.entities.Order;
 import com.example.demo.tpch.entities.TpchEntityFactory;
+import static com.example.demo.tpch.entities.TpchEntityFactory.EntityType;
 
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,48 +24,29 @@ class OrderTest {
             "5-LOW",
             "Clerk#000000951",
             0,
-            "nstructions sleep furiously among ",
-            null
+            "nstructions sleep furiously among "
         );
-        Order actual = TpchEntityFactory.fromLine(line, Order::new);
+        Order actual = (Order) TpchEntityFactory.fromLine(EntityType.ORDER, line);
         assertEquals(expected, actual);
     }
 
     @Test
     void testFromLine_InvalidLine_TooFewFields() {
         String line = "1|3691|O|173665.47|1996-01-02|5-LOW|Clerk#000000951|0"; // 8 fields
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> TpchEntityFactory.fromLine(line, Order::new));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> TpchEntityFactory.fromLine(EntityType.ORDER, line));
         assertEquals("Invalid line format", exception.getMessage());
     }
 
     @Test
     void testFromLine_InvalidLine_TooManyFields() {
         String line = "1|3691|O|173665.47|1996-01-02|5-LOW|Clerk#000000951|0|comment|extra"; // 10 fields
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> TpchEntityFactory.fromLine(line, Order::new));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> TpchEntityFactory.fromLine(EntityType.ORDER, line));
         assertEquals("Invalid line format", exception.getMessage());
     }
 
     @Test
     void testFromLine_InvalidNumberFormat() {
         String line = "not_a_number|3691|O|173665.47|1996-01-02|5-LOW|Clerk#000000951|0|comment";
-        assertThrows(NumberFormatException.class, () -> TpchEntityFactory.fromLine(line, Order::new));
-    }
-
-    @Test
-    void testToLine_ValidOrder() {
-        Order order = new Order(
-            1,
-            3691,
-            "O",
-            173665.47,
-            LocalDate.parse("1996-01-02"),
-            "5-LOW",
-            "Clerk#000000951",
-            0,
-            "nstructions sleep furiously among ",
-            null
-        );
-        String expectedLine = "1|3691|O|173665.47|1996-01-02|5-LOW|Clerk#000000951|0|nstructions sleep furiously among ";
-        assertEquals(expectedLine, order.toLine());
+        assertThrows(NumberFormatException.class, () -> TpchEntityFactory.fromLine(EntityType.ORDER, line));
     }
 }
