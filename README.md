@@ -1,3 +1,5 @@
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/{owner}/{repo}/badge)](https://scorecard.dev/viewer/?uri=github.com/{owner}/{repo})
+
 # Introduction 
 
 Resources for discussion around multi tenancy management in the new AARO Ascension Kubernetes
@@ -64,6 +66,7 @@ The `init-scripts` directory contains SQL scripts that are automatically execute
     ```
 
 The initscripts generates tables for the TPC-H database, described at https://www.tpc.org/TPC_Documents_Current_Versions/pdf/TPC-H_v3.0.1.pdf
+
 
 
 
