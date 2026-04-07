@@ -16,7 +16,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
-		<org-springframework-boot.spring-boot-starter-web.version>3.5.8</org-springframework-boot.spring-boot-starter-web.version>
+		<org-springframework-boot.spring-boot-starter-web.version>3.5.11</org-springframework-boot.spring-boot-starter-web.version>
 	</properties>
 
 	<dependencyManagement>
