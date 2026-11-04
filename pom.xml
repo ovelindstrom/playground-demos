@@ -20,7 +20,7 @@
 		<org-apache-tomcat-embed.tomcat-embed-core.version>10.1.55</org-apache-tomcat-embed.tomcat-embed-core.version>
 		<org-apache-tomcat.tomcat-coyote.version>10.1.55</org-apache-tomcat.tomcat-coyote.version>
 		<org-apache-tomcat.tomcat-catalina.version>10.1.55</org-apache-tomcat.tomcat-catalina.version>
-		<org-apache-tomcat.tomcat-util.version>10.1.55</org-apache-tomcat.tomcat-util.version>
+		<org-apache-tomcat.tomcat-util.version>10.1.56</org-apache-tomcat.tomcat-util.version>
 		<org-apache-tomcat-embed.tomcat-embed-websocket.version>10.1.55</org-apache-tomcat-embed.tomcat-embed-websocket.version>
 	</properties>
 
